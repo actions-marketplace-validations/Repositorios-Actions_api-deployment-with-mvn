@@ -1,23 +1,23 @@
 #!/bin/sh -l
 
-echo "## AZ LOGIN"
-echo "###################################################################"
-az login -u $1 -p $2
+JAVA_HOME='/opt/jdk-13.0.1'
+PATH="$JAVA_HOME/bin:$PATH"
+export PATH
 
-echo "## CREATE DIRECTORY $6"
-echo "###################################################################"
-rm -rf $6 # Lmpia directorio si existe
-mkdir $6
-ls -l
+M2_HOME='/opt/apache-maven-3.6.3'
+PATH="$M2_HOME/bin:$PATH"
+export PATH
 
-echo "## AZ ARTIFACT UNIVERSAL DOWNLOAD"
-echo "###################################################################"
-cd $6 && az artifacts universal download --organization "$3" --project "$4" --scope "$5" --feed "$6" --name "$7" --version $8 --path $9
-ls -l
+AXWAY_APIM_CLI_HOME='apim-cli-1.13.7'
+export AXWAY_APIM_CLI_HOME
+PATH="$AXWAY_APIM_CLI_HOME/scripts:$PATH"
+export PATH
+alias apim=apim.sh
 
-echo "## AZ LOGOUT"
-echo "###################################################################"
-az logout
+java -version
+mvn -version
+apim
+echo $1
 
 time=$(date)
 echo "time=$time" >> $GITHUB_OUTPUT
